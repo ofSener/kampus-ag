@@ -231,6 +231,25 @@
             transform: translateY(100%);
         }
 
+        /* Mobile: smaller text to fit screen */
+        @media (max-width: 768px) {
+            .floating-message {
+                width: 90%;
+                padding: 0 15px;
+            }
+            .floating-message h1 {
+                font-size: clamp(28px, 8vw, 56px);
+            }
+            .word span {
+                transform: translateY(0);
+            }
+            .floating-message .subtitle {
+                opacity: 1;
+                transform: translateY(0);
+                font-size: 14px;
+            }
+        }
+
         /* Phone Container */
         .phone-container {
             position: relative;
