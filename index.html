@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kampüs Ağı - Üniversiteni Keşfet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-light: #a78bfa;
+            --secondary: #06b6d4;
+            --accent: #f472b6;
+            --bg-dark: #030014;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.06);
+            --text: #ffffff;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --glow-primary: rgba(139, 92, 246, 0.4);
+            --glow-secondary: rgba(6, 182, 212, 0.4);
+        }
+
+        html {
+            scroll-behavior: auto;
+        }
+
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Noise Texture Overlay */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            z-index: 10000;
+            transition: width 0.1s linear;
+        }
+
+        /* Cursor Glow */
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--glow-primary) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.15;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 500vh;
+            position: relative;
+        }
+
+        .hero-pin-container {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Gradient Orbs */
+        .gradient-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, var(--primary), #4f46e5);
+            top: -20%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--secondary), #0891b2);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--accent), #db2777);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -10s;
+            opacity: 0.3;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 30px) scale(1.02); }
+        }
+
+        /* Floating Message */
+        .floating-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        .floating-message h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(48px, 10vw, 120px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .floating-message .subtitle {
+            font-size: clamp(16px, 2vw, 24px);
+            color: var(--text-muted);
+            margin-top: 20px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .word {
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .word span {
+            display: inline-block;
+            transform: translateY(100%);
+        }
+
+        /* Phone Container */
+        .phone-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .phone-wrapper {
+            position: relative;
+            transform-origin: center center;
+            transform-style: preserve-3d;
+        }
+
+        .phone-frame {
+            width: 380px;
+            height: 820px;
+            background: linear-gradient(145deg, #1a1a2e 0%, #0f0f1a 100%);
+            border-radius: 60px;
+            padding: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.1),
+                0 25px 50px -12px rgba(0, 0, 0, 0.8),
+                0 0 100px -20px var(--glow-primary),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            transform-style: preserve-3d;
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            border-radius: 60px;
+            pointer-events: none;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 130px;
+            height: 35px;
+            background: #000;
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .notch-camera {
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+            border-radius: 50%;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0a0a14 0%, #050510 100%);
+            border-radius: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* App Header */
+        .app-header {
+            height: 100px;
+            background: linear-gradient(180deg, rgba(10,10,20,0.98) 0%, transparent 100%);
+            padding: 55px 20px 15px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .app-header-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-icon svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+        }
+
+        /* Posts Feed */
+        .posts-feed {
+            padding: 110px 15px 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .post-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .post-card:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .post-card.main-post {
+            opacity: 1;
+            transform: translateY(0);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .verified-badge {
+            width: 16px;
+            height: 16px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .verified-badge svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .post-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .university-badge {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
+            color: var(--primary-light);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .post-content {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .post-card.main-post .post-content {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.3;
+            background: linear-gradient(135deg, #fff, rgba(255,255,255,0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
+            border-radius: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .post-action:hover {
+            background: rgba(255,255,255,0.08);
+            color: var(--text);
+        }
+
+        .post-action svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .post-action.liked {
+            color: #f43f5e;
+            background: rgba(244, 63, 94, 0.1);
+        }
+
+        /* App Bottom Nav */
+        .app-bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 90px;
+            background: linear-gradient(0deg, rgba(5,5,16,0.98) 60%, transparent 100%);
+            padding: 0 20px 30px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            z-index: 50;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            opacity: 1;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active .nav-icon {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Content Sections */
+        .content-section {
+            position: relative;
+            z-index: 2;
+            padding: 150px 5%;
+        }
+
+        /* Bento Grid */
+        .bento-section {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-light);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-tag::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+        }
+
+        .section-title .gradient-text {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--secondary) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-desc {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Bento Cards */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 280px);
+            gap: 20px;
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(139, 92, 246, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow:
+                0 30px 60px -20px rgba(0, 0, 0, 0.5),
+                0 0 50px rgba(139, 92, 246, 0.1);
+        }
+
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        .bento-card.large {
+            grid-column: span 2;
+        }
+
+        .bento-card.tall {
+            grid-row: span 2;
+        }
+
+        .bento-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bento-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bento-desc {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 15px;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .bento-visual {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            height: 60%;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 32px 0 32px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            opacity: 0.5;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 100px 5%;
+            position: relative;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(56px, 8vw, 80px);
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Marquee */
+        .marquee-section {
+            padding: 80px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .marquee-section::before,
+        .marquee-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            z-index: 2;
+        }
+
+        .marquee-section::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--bg-dark), transparent);
+        }
+
+        .marquee-section::after {
+            right: 0;
+            background: linear-gradient(-90deg, var(--bg-dark), transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 60px;
+            animation: marquee 30s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .uni-logo {
+            padding: 24px 48px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .uni-logo:hover {
+            border-color: var(--primary);
+            color: var(--text);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 150px 5%;
+            position: relative;
+        }
+
+        .cta-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--glow-primary) 0%, transparent 70%);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .cta-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(40px, 6vw, 64px);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .cta-desc {
+            font-size: 20px;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .btn {
+            padding: 20px 40px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-card);
+            border-color: var(--primary);
+        }
+
+        /* Store badges */
+        .store-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .store-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .store-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .store-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .store-info {
+            text-align: left;
+        }
+
+        .store-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .store-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 5% 40px;
+            border-top: 1px solid var(--border);
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 60px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .footer-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 80px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .footer-column a {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 0;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: var(--text);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 60px auto 0;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-copyright {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .social-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+            }
+
+            .bento-card.tall {
+                grid-row: span 1;
+            }
+
+            .footer-links {
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .phone-frame {
+                width: 300px;
+                height: 650px;
+                border-radius: 45px;
+                padding: 10px;
+            }
+
+            .phone-screen {
+                border-radius: 38px;
+            }
+
+            .phone-notch {
+                width: 100px;
+                height: 28px;
+            }
+
+            .post-card.main-post .post-content {
+                font-size: 18px;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bento-card.large {
+                grid-column: span 1;
+            }
+
+            .stats-container {
+                gap: 40px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .cursor-glow {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Cursor Glow -->
+    <div class="cursor-glow"></div>
+
+    <!-- Grid Background -->
+    <div class="grid-bg"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-pin-container">
+            <div class="gradient-orbs">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+                <div class="orb orb-3"></div>
+            </div>
+
+            <!-- Floating Message -->
+            <div class="floating-message">
+                <h1>
+                    <div class="word"><span>Kampüs</span></div>
+                    <div class="word"><span>Ağı</span></div><br>
+                    <div class="word"><span>Kampüsüne</span></div>
+                    <div class="word"><span>Geldi</span></div>
+                </h1>
+                <p class="subtitle">Üniversite deneyimini yeniden keşfet</p>
+            </div>
+
+            <!-- Phone Container -->
+            <div class="phone-container">
+                <div class="phone-wrapper">
+                    <div class="phone-frame">
+                        <div class="phone-notch">
+                            <div class="notch-camera"></div>
+                        </div>
+                        <div class="phone-screen">
+
+                            <!-- App Header -->
+                            <div class="app-header">
+                                <div class="app-logo">kampüs ağı</div>
+                                <div class="app-header-icons">
+                                    <div class="header-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="header-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Posts Feed -->
+                            <div class="posts-feed">
+
+                                <!-- Post 0 -->
+                                <div class="post-card" id="post-0">
+                                    <div class="post-header">
+                                        <div class="post-avatar">🎉</div>
+                                        <div class="post-user-info">
+                                            <div class="post-username">
+                                                Kampüs Ağı
+                                                <span class="verified-badge">
+                                                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                                </span>
+                                            </div>
+                                            <div class="post-meta">
+                                                <span class="university-badge">Resmi</span>
+                                                <span>2 saat önce</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-content">Yeni dönem, yeni başlangıçlar! Herkese başarılar dileriz 🚀</div>
+                                    <div class="post-actions">
+                                        <div class="post-action liked">
+                                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            <span>2.4k</span>
+                                        </div>
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                            <span>856</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Main Post -->
+                                <div class="post-card main-post" id="main-post">
+                                    <div class="post-header">
+                                        <div class="post-avatar">KA</div>
+                                        <div class="post-user-info">
+                                            <div class="post-username">
+                                                Kampüs Ağı
+                                                <span class="verified-badge">
+                                                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                                                </span>
+                                            </div>
+                                            <div class="post-meta">
+                                                <span class="university-badge">Duyuru</span>
+                                                <span>Şimdi</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-content">Kampüs Ağı uygulaması kampüsüne geldi! ✨</div>
+                                    <div class="post-actions">
+                                        <div class="post-action liked">
+                                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            <span>12.5k</span>
+                                        </div>
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                            <span>3.2k</span>
+                                        </div>
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                                            <span>Paylaş</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Post 1 -->
+                                <div class="post-card" id="post-1">
+                                    <div class="post-header">
+                                        <div class="post-avatar" style="background: linear-gradient(135deg, #f472b6, #ec4899);">EA</div>
+                                        <div class="post-user-info">
+                                            <div class="post-username">Elif Arslan</div>
+                                            <div class="post-meta">
+                                                <span class="university-badge">İTÜ</span>
+                                                <span>5 dk önce</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-content">Kütüphanede yer var mı bilen? Final haftası yaklaşıyor 📚</div>
+                                    <div class="post-actions">
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                                            <span>24</span>
+                                        </div>
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                            <span>8</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Post 2 -->
+                                <div class="post-card" id="post-2">
+                                    <div class="post-header">
+                                        <div class="post-avatar" style="background: linear-gradient(135deg, #22d3ee, #06b6d4);">MK</div>
+                                        <div class="post-user-info">
+                                            <div class="post-username">Mehmet Kaya</div>
+                                            <div class="post-meta">
+                                                <span class="university-badge">Boğaziçi</span>
+                                                <span>12 dk önce</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-image">💻</div>
+                                    <div class="post-content">Yarınki hackathon için takım arıyorum! Full-stack veya ML bilen biri lazım.</div>
+                                    <div class="post-actions">
+                                        <div class="post-action liked">
+                                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            <span>156</span>
+                                        </div>
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                            <span>42</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Post 3 -->
+                                <div class="post-card" id="post-3">
+                                    <div class="post-header">
+                                        <div class="post-avatar" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">ZD</div>
+                                        <div class="post-user-info">
+                                            <div class="post-username">Zeynep Demir</div>
+                                            <div class="post-meta">
+                                                <span class="university-badge">ODTÜ</span>
+                                                <span>28 dk önce</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="post-content">Yemekhanede bugün iskender varmış! Sıraya giren var mı? 🍖</div>
+                                    <div class="post-actions">
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                                            <span>89</span>
+                                        </div>
+                                        <div class="post-action">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                            <span>31</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Bottom Navigation -->
+                            <div class="app-bottom-nav">
+                                <div class="nav-item active">
+                                    <div class="nav-icon">
+                                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="nav-item">
+                                    <div class="nav-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="nav-item">
+                                    <div class="nav-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                    </div>
+                                </div>
+                                <div class="nav-item">
+                                    <div class="nav-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="nav-item">
+                                    <div class="nav-icon">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section - Bento Grid -->
+    <section class="content-section bento-section">
+        <div class="section-header">
+            <div class="section-tag">Özellikler</div>
+            <h2 class="section-title">Kampüs hayatını<br><span class="gradient-text">yeniden tasarladık</span></h2>
+            <p class="section-desc">Ders notlarından etkinliklere, yemekhaneden kütüphaneye kadar kampüsünle ilgili her şey artık avucunun içinde.</p>
+        </div>
+
+        <div class="bento-grid">
+            <div class="bento-card large">
+                <div class="bento-icon">🎓</div>
+                <h3 class="bento-title">Ders Notları & Kaynaklar</h3>
+                <p class="bento-desc">Binlerce öğrencinin paylaştığı ders notlarına, geçmiş sınav sorularına ve çalışma materyallerine ücretsiz eriş.</p>
+                <div class="bento-visual">📚</div>
+            </div>
+            <div class="bento-card">
+                <div class="bento-icon">🤝</div>
+                <h3 class="bento-title">Topluluklar</h3>
+                <p class="bento-desc">İlgi alanlarına göre gruplara katıl, yeni insanlarla tanış.</p>
+            </div>
+            <div class="bento-card">
+                <div class="bento-icon">📅</div>
+                <h3 class="bento-title">Etkinlikler</h3>
+                <p class="bento-desc">Konserler, kariyer günleri, workshoplar ve daha fazlası.</p>
+            </div>
+            <div class="bento-card">
+                <div class="bento-icon">💬</div>
+                <h3 class="bento-title">Mesajlaşma</h3>
+                <p class="bento-desc">Grup çalışmaları için kanallar oluştur.</p>
+            </div>
+            <div class="bento-card">
+                <div class="bento-icon">🗺️</div>
+                <h3 class="bento-title">Kampüs Haritası</h3>
+                <p class="bento-desc">İnteraktif haritayla her yeri kolayca bul.</p>
+            </div>
+            <div class="bento-card large">
+                <div class="bento-icon">🔔</div>
+                <h3 class="bento-title">Akıllı Bildirimler</h3>
+                <p class="bento-desc">Derslerini, sınavlarını ve önemli tarihleri hatırlatan AI destekli bildirimlerle hiçbir şeyi kaçırma.</p>
+                <div class="bento-visual">🤖</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number" data-count="50">0</div>
+                <div class="stat-label">Bin+ Öğrenci</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="120">0</div>
+                <div class="stat-label">Üniversite</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="1">0</div>
+                <div class="stat-label">Milyon+ Paylaşım</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="4.9">0</div>
+                <div class="stat-label">App Store</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Universities Marquee -->
+    <section class="marquee-section">
+        <div class="marquee-track">
+            <div class="uni-logo">İSTANBUL TEKNİK</div>
+            <div class="uni-logo">BOĞAZİÇİ</div>
+            <div class="uni-logo">ODTÜ</div>
+            <div class="uni-logo">KOÇ</div>
+            <div class="uni-logo">SABANCI</div>
+            <div class="uni-logo">BİLKENT</div>
+            <div class="uni-logo">YILDIZ TEKNİK</div>
+            <div class="uni-logo">MARMARA</div>
+            <div class="uni-logo">HACETTEPE</div>
+            <div class="uni-logo">ANKARA</div>
+            <div class="uni-logo">EGE</div>
+            <div class="uni-logo">İSTANBUL TEKNİK</div>
+            <div class="uni-logo">BOĞAZİÇİ</div>
+            <div class="uni-logo">ODTÜ</div>
+            <div class="uni-logo">KOÇ</div>
+            <div class="uni-logo">SABANCI</div>
+            <div class="uni-logo">BİLKENT</div>
+            <div class="uni-logo">YILDIZ TEKNİK</div>
+            <div class="uni-logo">MARMARA</div>
+            <div class="uni-logo">HACETTEPE</div>
+            <div class="uni-logo">ANKARA</div>
+            <div class="uni-logo">EGE</div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <div class="cta-glow"></div>
+            <h2 class="cta-title">Kampüs deneyimini<br><span class="gradient-text">dönüştürmeye hazır mısın?</span></h2>
+            <p class="cta-desc">50.000'den fazla öğrenci zaten aramıza katıldı. Sen de hemen indir!</p>
+
+            <div class="store-buttons">
+                <a href="#" class="store-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                    </svg>
+                    <div class="store-info">
+                        <div class="store-label">İndir</div>
+                        <div class="store-name">App Store</div>
+                    </div>
+                </a>
+                <a href="#" class="store-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 010 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/>
+                    </svg>
+                    <div class="store-info">
+                        <div class="store-label">İndir</div>
+                        <div class="store-name">Google Play</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">kampüs ağı</div>
+                <p class="footer-desc">Türkiye'nin en büyük üniversite öğrenci ağı. Kampüs hayatını birlikte dönüştürüyoruz.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Ürün</h4>
+                    <a href="#">Özellikler</a>
+                    <a href="#">Fiyatlandırma</a>
+                    <a href="#">SSS</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Şirket</h4>
+                    <a href="#">Hakkımızda</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Kariyer</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Yasal</h4>
+                    <a href="#">Gizlilik</a>
+                    <a href="#">Kullanım Şartları</a>
+                    <a href="#">KVKK</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Kampüs Ağı. Tüm hakları saklıdır.</p>
+            <div class="footer-social">
+                <a href="#" class="social-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                </a>
+                <a href="#" class="social-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="#" class="social-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                </a>
+                <a href="#" class="social-link">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Lenis Smooth Scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // GSAP ScrollTrigger integration with Lenis
+        gsap.registerPlugin(ScrollTrigger);
+
+        lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+
+        // Cursor Glow
+        const cursorGlow = document.querySelector('.cursor-glow');
+        let mouseX = 0, mouseY = 0;
+        let glowX = 0, glowY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top = glowY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Scroll Progress
+        const scrollProgress = document.querySelector('.scroll-progress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = progress + '%';
+        });
+
+        // Initial states
+        gsap.set('.phone-wrapper', { scale: 3, opacity: 0, rotateY: 15, rotateX: 5 });
+        gsap.set('.floating-message', { opacity: 1 });
+        gsap.set('.floating-message .subtitle', { opacity: 0, y: 20 });
+        gsap.set(['#post-0', '#post-1', '#post-2', '#post-3'], { opacity: 0, y: 30 });
+
+        // Text reveal animation
+        gsap.to('.word span', {
+            y: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: 'power3.out',
+            delay: 0.3
+        });
+
+        gsap.to('.floating-message .subtitle', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 1.2
+        });
+
+        // Main timeline
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.hero-section',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1.5,
+                pin: '.hero-pin-container'
+            }
+        });
+
+        // Phase 1: Message fades, phone appears
+        tl.to('.floating-message', {
+            scale: 0.5,
+            opacity: 0,
+            duration: 0.3
+        })
+        .to('.phone-wrapper', {
+            opacity: 1,
+            scale: 2.5,
+            duration: 0.2
+        }, '<')
+
+        // Phase 2: Phone zooms out with 3D effect
+        .to('.phone-wrapper', {
+            scale: 1,
+            rotateY: 0,
+            rotateX: 0,
+            duration: 0.5,
+            ease: 'power2.out'
+        })
+
+        // Phase 3: Posts appear
+        .to('#post-0', { opacity: 1, y: 0, duration: 0.12 })
+        .to('#post-1', { opacity: 1, y: 0, duration: 0.12 })
+        .to('#post-2', { opacity: 1, y: 0, duration: 0.12 })
+        .to('#post-3', { opacity: 1, y: 0, duration: 0.12 })
+
+        // Phase 4: Slight 3D tilt
+        .to('.phone-wrapper', {
+            rotateY: -10,
+            rotateX: 5,
+            duration: 0.2
+        })
+
+        // Phase 5: Phone exits
+        .to('.phone-wrapper', {
+            scale: 0.5,
+            x: '-60vw',
+            rotateY: -30,
+            opacity: 0,
+            duration: 0.4,
+            ease: 'power2.inOut'
+        });
+
+        // 3D Phone tilt on mouse move
+        const phoneWrapper = document.querySelector('.phone-wrapper');
+        document.addEventListener('mousemove', (e) => {
+            const rect = phoneWrapper.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            const deltaX = (e.clientX - centerX) / (window.innerWidth / 2);
+            const deltaY = (e.clientY - centerY) / (window.innerHeight / 2);
+
+            if (ScrollTrigger.getAll().find(st => st.trigger === document.querySelector('.hero-section'))?.progress < 0.6) {
+                gsap.to(phoneWrapper, {
+                    rotateY: deltaX * 10,
+                    rotateX: -deltaY * 10,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                });
+            }
+        });
+
+        // Bento cards animation
+        gsap.utils.toArray('.bento-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 80,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.08,
+                ease: 'power3.out'
+            });
+        });
+
+        // Stats counter animation
+        gsap.utils.toArray('.stat-number').forEach((stat) => {
+            const target = parseFloat(stat.dataset.count);
+            const isDecimal = target % 1 !== 0;
+
+            ScrollTrigger.create({
+                trigger: stat,
+                start: 'top 80%',
+                onEnter: () => {
+                    gsap.to(stat, {
+                        innerHTML: target,
+                        duration: 2,
+                        ease: 'power2.out',
+                        snap: { innerHTML: isDecimal ? 0.1 : 1 },
+                        onUpdate: function() {
+                            if (isDecimal) {
+                                stat.innerHTML = parseFloat(stat.innerHTML).toFixed(1);
+                            }
+                        }
+                    });
+                },
+                once: true
+            });
+        });
+
+        // CTA animation
+        gsap.from('.cta-container > *', {
+            scrollTrigger: {
+                trigger: '.cta-container',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            y: 60,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power3.out'
+        });
+    </script>
+
+</body>
+</html>
