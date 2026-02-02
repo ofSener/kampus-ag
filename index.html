@@ -6,7 +6,7 @@
     <title>Kampüs Ağı - Üniversiteni Keşfet</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- GSAP & Plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -58,7 +58,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-dark);
             color: var(--text);
             overflow-x: hidden;
@@ -201,7 +201,7 @@
         }
 
         .floating-message h1 {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: clamp(48px, 10vw, 120px);
             font-weight: 700;
             line-height: 1;
@@ -344,7 +344,7 @@
         }
 
         .app-logo {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 20px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary-light), var(--secondary));
@@ -377,10 +377,10 @@
 
         /* Posts Feed */
         .posts-feed {
-            padding: 110px 15px 100px;
+            padding: 100px 12px 90px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             height: 100%;
             overflow-y: auto;
         }
@@ -388,8 +388,8 @@
         .post-card {
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 16px;
             border: 1px solid rgba(255,255,255,0.06);
             opacity: 0;
             transform: translateY(20px);
@@ -412,20 +412,20 @@
         .post-header {
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 16px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
         .post-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         }
 
@@ -477,15 +477,15 @@
         }
 
         .post-content {
-            font-size: 15px;
-            line-height: 1.6;
-            margin-bottom: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
             color: rgba(255,255,255,0.9);
         }
 
         .post-card.main-post .post-content {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 24px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
             font-weight: 600;
             line-height: 1.3;
             background: linear-gradient(135deg, #fff, rgba(255,255,255,0.8));
@@ -496,14 +496,14 @@
 
         .post-image {
             width: 100%;
-            height: 180px;
+            height: 140px;
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
-            border-radius: 16px;
-            margin-bottom: 16px;
+            border-radius: 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 32px;
         }
 
         .post-actions {
@@ -514,12 +514,12 @@
         .post-action {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 10px 16px;
+            gap: 5px;
+            padding: 8px 12px;
             background: rgba(255,255,255,0.03);
-            border-radius: 12px;
+            border-radius: 10px;
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             transition: all 0.2s;
         }
@@ -530,8 +530,8 @@
         }
 
         .post-action svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
 
         .post-action.liked {
@@ -636,7 +636,7 @@
         }
 
         .section-title {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: clamp(40px, 6vw, 72px);
             font-weight: 700;
             line-height: 1.1;
@@ -747,7 +747,7 @@
         }
 
         .bento-title {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 12px;
@@ -821,7 +821,7 @@
         }
 
         .stat-number {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: clamp(56px, 8vw, 80px);
             font-weight: 700;
             background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
@@ -887,7 +887,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-weight: 700;
             font-size: 16px;
             letter-spacing: 2px;
@@ -928,7 +928,7 @@
         }
 
         .cta-title {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: clamp(40px, 6vw, 64px);
             font-weight: 700;
             line-height: 1.1;
@@ -1074,7 +1074,7 @@
         }
 
         .footer-logo {
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Outfit', sans-serif;
             font-size: 28px;
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary-light), var(--secondary));
@@ -1190,6 +1190,165 @@
             50% { transform: scale(1.2); }
         }
 
+        /* Opportunities Section */
+        .opportunities-section {
+            padding: 100px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .opportunities-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .opp-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .opp-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .opp-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(139, 92, 246, 0.15));
+            border: 1px solid rgba(244, 114, 182, 0.3);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .opp-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .opp-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .opp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .opp-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .opp-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .opp-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 20px 40px -15px rgba(139, 92, 246, 0.2);
+        }
+
+        .opp-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .opp-card-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.15));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .opp-card:hover .opp-card-icon {
+            transform: scale(1.08) rotate(-3deg);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(6, 182, 212, 0.25));
+        }
+
+        .opp-card-icon svg {
+            width: 26px;
+            height: 26px;
+            stroke: var(--primary-light);
+            stroke-width: 1.8;
+            fill: none;
+        }
+
+        .opp-card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .opp-card-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .opp-card-stats {
+            display: flex;
+            gap: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .opp-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .opp-stat-value {
+            font-weight: 600;
+            color: var(--primary-light);
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .bento-grid {
@@ -1204,52 +1363,353 @@
             .footer-links {
                 gap: 40px;
             }
+
+            .opp-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
             .phone-frame {
-                width: 300px;
-                height: 650px;
-                border-radius: 45px;
-                padding: 10px;
+                width: 280px;
+                height: 580px;
+                border-radius: 40px;
+                padding: 8px;
             }
 
             .phone-screen {
-                border-radius: 38px;
+                border-radius: 34px;
             }
 
             .phone-notch {
-                width: 100px;
-                height: 28px;
+                width: 90px;
+                height: 24px;
             }
 
             .post-card.main-post .post-content {
-                font-size: 18px;
+                font-size: 16px;
             }
 
+            /* Mobile Section Spacing */
+            .content-section {
+                padding: 80px 5%;
+            }
+
+            .section-header {
+                margin-bottom: 40px;
+            }
+
+            .section-tag {
+                padding: 8px 14px;
+                font-size: 11px;
+                margin-bottom: 16px;
+            }
+
+            .section-title {
+                font-size: clamp(28px, 7vw, 40px);
+                margin-bottom: 16px;
+            }
+
+            .section-desc {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            /* Mobile Bento Grid */
             .bento-grid {
                 grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                gap: 14px;
+            }
+
+            .bento-card {
+                padding: 22px;
+                border-radius: 22px;
             }
 
             .bento-card.large {
                 grid-column: span 1;
             }
 
+            .bento-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 14px;
+                margin-bottom: 16px;
+            }
+
+            .bento-icon svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .bento-title {
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+
+            .bento-desc {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+            .bento-visual {
+                display: none;
+            }
+
+            /* Mobile Stats */
+            .stats-section {
+                padding: 60px 5%;
+            }
+
             .stats-container {
-                gap: 40px;
+                gap: 24px 16px;
+                justify-content: space-around;
+            }
+
+            .stat-item {
+                flex: 0 0 calc(50% - 8px);
+            }
+
+            .stat-number {
+                font-size: clamp(36px, 10vw, 48px);
+                margin-bottom: 6px;
+            }
+
+            .stat-label {
+                font-size: 11px;
+                letter-spacing: 1px;
+            }
+
+            /* Mobile Marquee */
+            .marquee-section {
+                padding: 50px 0;
+            }
+
+            .uni-logo {
+                padding: 14px 24px;
+                font-size: 12px;
+                border-radius: 14px;
+                letter-spacing: 1px;
+            }
+
+            /* Mobile Opportunities */
+            .opportunities-section {
+                padding: 60px 5%;
+            }
+
+            .opp-header {
+                margin-bottom: 32px;
+            }
+
+            .opp-tag {
+                padding: 6px 12px;
+                font-size: 10px;
+            }
+
+            .opp-title {
+                font-size: clamp(24px, 6vw, 32px);
+            }
+
+            .opp-subtitle {
+                font-size: 14px;
+            }
+
+            .opp-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .opp-card {
+                padding: 20px;
+                border-radius: 18px;
+            }
+
+            .opp-card-icon {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                margin-bottom: 14px;
+            }
+
+            .opp-card-icon svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .opp-card-title {
+                font-size: 16px;
+            }
+
+            .opp-card-desc {
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+
+            .opp-card-stats {
+                padding-top: 12px;
+                gap: 12px;
+            }
+
+            .opp-stat {
+                font-size: 11px;
+            }
+
+            /* Mobile CTA */
+            .cta-section {
+                padding: 80px 5%;
+            }
+
+            .cta-title {
+                font-size: clamp(28px, 7vw, 40px);
+            }
+
+            .cta-desc {
+                font-size: 15px;
+                margin-bottom: 32px;
+            }
+
+            .store-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                margin-top: 28px;
+            }
+
+            .store-btn {
+                width: 100%;
+                max-width: 260px;
+                padding: 14px 24px;
+                border-radius: 14px;
+            }
+
+            .store-btn svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .store-name {
+                font-size: 14px;
+            }
+
+            .store-label {
+                font-size: 10px;
+            }
+
+            /* Mobile Footer */
+            footer {
+                padding: 50px 5% 30px;
             }
 
             .footer-content {
                 flex-direction: column;
+                gap: 40px;
+            }
+
+            .footer-brand {
+                max-width: 100%;
+            }
+
+            .footer-logo {
+                font-size: 22px;
+            }
+
+            .footer-desc {
+                font-size: 13px;
             }
 
             .footer-links {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+
+            .footer-column {
+                flex: 0 0 calc(50% - 12px);
+            }
+
+            .footer-column h4 {
+                font-size: 12px;
+                margin-bottom: 14px;
+            }
+
+            .footer-column a {
+                font-size: 13px;
+                padding: 6px 0;
+            }
+
+            .footer-bottom {
+                margin-top: 40px;
+                padding-top: 20px;
                 flex-direction: column;
-                gap: 30px;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .footer-copyright {
+                font-size: 12px;
+            }
+
+            .made-in-turkey {
+                font-size: 12px;
+            }
+
+            .footer-social {
+                gap: 12px;
+            }
+
+            .social-link {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+            }
+
+            .social-link svg {
+                width: 18px;
+                height: 18px;
             }
 
             .cursor-glow {
                 display: none;
+            }
+
+            /* Hide grid bg on mobile for performance */
+            .grid-bg {
+                opacity: 0.3;
+            }
+
+            .orb {
+                filter: blur(80px);
+                opacity: 0.3;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 380px) {
+            .phone-frame {
+                width: 240px;
+                height: 500px;
+                border-radius: 32px;
+            }
+
+            .floating-message h1 {
+                font-size: clamp(24px, 7vw, 36px);
+            }
+
+            .section-title {
+                font-size: clamp(24px, 6.5vw, 32px);
+            }
+
+            .bento-card {
+                padding: 18px;
+            }
+
+            .stat-number {
+                font-size: 32px;
+            }
+
+            .opp-title {
+                font-size: 22px;
             }
         }
     </style>
@@ -1570,6 +2030,79 @@
         </div>
     </section>
 
+    <!-- Opportunities Section - Staj & Kariyer -->
+    <section class="opportunities-section">
+        <div class="opp-container">
+            <div class="opp-header">
+                <div class="opp-tag">Kariyer Fırsatları</div>
+                <h2 class="opp-title">Staj ve iş fırsatlarını<br><span class="gradient-text">kaçırma</span></h2>
+                <p class="opp-subtitle">Türkiye'nin önde gelen şirketleriyle doğrudan bağlantı kur, kariyerine erken başla</p>
+            </div>
+
+            <div class="opp-grid">
+                <div class="opp-card">
+                    <div class="opp-card-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="opp-card-title">Staj Programları</h3>
+                    <p class="opp-card-desc">Yüzlerce şirketin staj ilanlarına tek tıkla başvur, CV'ni oluştur ve takip et.</p>
+                    <div class="opp-card-stats">
+                        <div class="opp-stat">
+                            <span class="opp-stat-value">500+</span>
+                            <span>Aktif İlan</span>
+                        </div>
+                        <div class="opp-stat">
+                            <span class="opp-stat-value">85%</span>
+                            <span>Yerleşim</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="opp-card">
+                    <div class="opp-card-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="opp-card-title">Şirket Etkinlikleri</h3>
+                    <p class="opp-card-desc">Kariyer günleri, tech talk'lar ve networking etkinliklerine katıl.</p>
+                    <div class="opp-card-stats">
+                        <div class="opp-stat">
+                            <span class="opp-stat-value">50+</span>
+                            <span>Partner</span>
+                        </div>
+                        <div class="opp-stat">
+                            <span class="opp-stat-value">Aylık</span>
+                            <span>Etkinlik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="opp-card">
+                    <div class="opp-card-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="opp-card-title">Bootcamp & Eğitimler</h3>
+                    <p class="opp-card-desc">Ücretsiz teknik eğitimler, sertifika programları ve mentorluk fırsatları.</p>
+                    <div class="opp-card-stats">
+                        <div class="opp-stat">
+                            <span class="opp-stat-value">30+</span>
+                            <span>Kurs</span>
+                        </div>
+                        <div class="opp-stat">
+                            <span class="opp-stat-value">Ücretsiz</span>
+                            <span>Erişim</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Stats Section -->
     <section class="stats-section">
         <div class="stats-container">
@@ -1868,12 +2401,43 @@
                     start: 'top 85%',
                     toggleActions: 'play none none reverse'
                 },
-                y: 80,
+                y: 60,
                 opacity: 0,
-                duration: 0.8,
-                delay: i * 0.08,
+                duration: 0.6,
+                delay: i * 0.06,
                 ease: 'power3.out'
             });
+        });
+
+        // Opportunity cards animation
+        gsap.utils.toArray('.opp-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 88%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 50,
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.6,
+                delay: i * 0.1,
+                ease: 'power3.out'
+            });
+        });
+
+        // Opportunity header animation
+        gsap.from('.opp-header > *', {
+            scrollTrigger: {
+                trigger: '.opp-header',
+                start: 'top 85%',
+                toggleActions: 'play none none reverse'
+            },
+            y: 40,
+            opacity: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: 'power3.out'
         });
 
         // Stats counter animation
